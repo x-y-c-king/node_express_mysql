@@ -26,11 +26,32 @@ connection.connect((err) => {
  */
 
 class DbService {
-    static getDbServiceInstance() {
+    static getDbServiceInstance () {
         return instance ? instance : new DbService();
     }
 
-    async getAllData() {
+    async login (name, pwd) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `select * from admin where user = '${name}' && pwd = '${pwd}'`
+                console.log(query)
+
+                connection.query(query, (err, results) => {
+                    if(err) reject(new Error(err.message));
+                    if(results && results.length !== 0) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
+                })
+            })
+            return response;
+        } catch {
+            return false
+        }
+    }
+
+    async getAllData () {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT * FROM user;";
@@ -48,39 +69,39 @@ class DbService {
     }
 
 
-    async insertNewName(name) {
+    async insertNewName (name) {
         try {
             const dateAdded = new Date();
             const insertId = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
 
-                connection.query(query, [name, dateAdded] , (err, result) => {
+                connection.query(query, [name, dateAdded], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                 })
             });
             return {
-                id : insertId,
-                name : name,
-                dateAdded : dateAdded
+                id: insertId,
+                name: name,
+                dateAdded: dateAdded
             };
         } catch (error) {
             console.log(error);
         }
     }
 
-    async deleteRowById(id) {
+    async deleteRowById (id) {
         try {
-            id = parseInt(id, 10); 
+            id = parseInt(id, 10);
             const response = await new Promise((resolve, reject) => {
                 const query = "DELETE FROM names WHERE id = ?";
-    
-                connection.query(query, [id] , (err, result) => {
+
+                connection.query(query, [id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.affectedRows);
                 })
             });
-    
+
             return response === 1 ? true : false;
         } catch (error) {
             console.log(error);
@@ -88,18 +109,18 @@ class DbService {
         }
     }
 
-    async updateNameById(id, name) {
+    async updateNameById (id, name) {
         try {
-            id = parseInt(id, 10); 
+            id = parseInt(id, 10);
             const response = await new Promise((resolve, reject) => {
                 const query = "UPDATE names SET name = ? WHERE id = ?";
-    
-                connection.query(query, [name, id] , (err, result) => {
+
+                connection.query(query, [name, id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.affectedRows);
                 })
             });
-    
+
             return response === 1 ? true : false;
         } catch (error) {
             console.log(error);
@@ -107,7 +128,7 @@ class DbService {
         }
     }
 
-    async searchByName(name) {
+    async searchByName (name) {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT * FROM names WHERE name = ?;";

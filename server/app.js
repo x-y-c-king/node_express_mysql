@@ -10,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended : false }));
 
+const admin = require("./router/admin")
+app.use("/admin", admin);
 
 // create
 app.post('/insert', (request, response) => {
