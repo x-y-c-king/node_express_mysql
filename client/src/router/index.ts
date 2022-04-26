@@ -1,25 +1,55 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+const routes = [
+    {
+        path: "/",
+        name: "home",
+        component: () => import("@/views/Home.vue"),
+        meta: {
+            title: "首页"
+        },
+        // children: [
+        //     {
+        //         path: '/',
+        //         redirect: '/bubble'
+        //     },
+        //     {
+        //         path: "bubble",
+        //         name: 'bubble',
+        //         component: () => import("../view/children/Table.vue"),
+        //         meta: {
+        //             title: "气泡文案"
+        //         }
+        //     }
+        // ]
+    }, {
+        path: '/login',
+        name: 'login',
+        component: () => import("../views/Login.vue")
+    },
+    {
+		path: "/:pathMath(.*)",
+		redirect: '/',
+	},
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHashHistory(),
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        }
+        return
+    }
+})
+
+router.beforeEach((to, from, next) => {
+    // if (localStorage.getItem("token")) {
+
+    // }
+    document.title = to.meta.title as string
+    next()
 })
 
 export default router
