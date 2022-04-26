@@ -33,7 +33,7 @@ class DbService {
     async login (name, pwd) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = `select * from admin where user = '${name}' && pwd = '${pwd}'`
+                const query = `select * from admin where user = '${name}' and pwd = '${pwd}'`
                 console.log(query)
 
                 connection.query(query, (err, results) => {

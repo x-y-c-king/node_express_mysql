@@ -71,4 +71,4 @@ app.get('/search/:name', (request, response) => {
     .catch(err => console.log(err));
 })
 
-app.listen(process.env.PORT, () => console.log('app is running'));
+app.listen(process.env.PORT, () => console.log('app is running http://127.0.0.1:' + process.env.PORT));
