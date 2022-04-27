@@ -12,7 +12,8 @@
     "element-plus": "^2.1.11",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "wnl-xdsdk": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.27",
