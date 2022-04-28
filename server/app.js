@@ -11,64 +11,67 @@ app.use(express.json());
 app.use(express.urlencoded({ extended : false }));
 
 const admin = require("./router/admin")
+const user = require("./router/user")
+
 app.use("/admin", admin);
+app.use("/user", user);
 
 // create
-app.post('/insert', (request, response) => {
-    const { name } = request.body;
-    const db = dbService.getDbServiceInstance();
+// app.post('/insert', (request, response) => {
+//     const { name } = request.body;
+//     const db = dbService.getDbServiceInstance();
     
-    const result = db.insertNewName(name);
+//     const result = db.insertNewName(name);
 
-    result
-    .then(data => response.json({ data: data}))
-    .catch(err => console.log(err));
-});
+//     result
+//     .then(data => response.json({ data: data}))
+//     .catch(err => console.log(err));
+// });
 
-// read
-app.get('/getAll', (request, response) => {
-    const db = dbService.getDbServiceInstance();
+// // read
+// app.get('/getAll', (request, response) => {
+//     const db = dbService.getDbServiceInstance();
 
-    const result = db.getAllData();
+//     const result = db.getAllData();
     
-    result
-    .then(data => response.json({data : data}))
-    .catch(err => console.log(err));
-})
+//     result
+//     .then(data => response.json({data : data}))
+//     .catch(err => console.log(err));
+// })
 
-// update
-app.patch('/update', (request, response) => {
-    const { id, name } = request.body;
-    const db = dbService.getDbServiceInstance();
+// // update
+// app.patch('/update', (request, response) => {
+//     const { id, name } = request.body;
+//     const db = dbService.getDbServiceInstance();
 
-    const result = db.updateNameById(id, name);
+//     const result = db.updateNameById(id, name);
     
-    result
-    .then(data => response.json({success : data}))
-    .catch(err => console.log(err));
-});
+//     result
+//     .then(data => response.json({success : data}))
+//     .catch(err => console.log(err));
+// });
 
-// delete
-app.delete('/delete/:id', (request, response) => {
-    const { id } = request.params;
-    const db = dbService.getDbServiceInstance();
+// // delete
+// app.delete('/delete/:id', (request, response) => {
+//     const { id } = request.params;
+//     const db = dbService.getDbServiceInstance();
 
-    const result = db.deleteRowById(id);
+//     const result = db.deleteRowById(id);
     
-    result
-    .then(data => response.json({success : data}))
-    .catch(err => console.log(err));
-});
+//     result
+//     .then(data => response.json({success : data}))
+//     .catch(err => console.log(err));
+// });
 
-app.get('/search/:name', (request, response) => {
-    const { name } = request.params;
-    const db = dbService.getDbServiceInstance();
+// app.get('/search/:name', (request, response) => {
+//     const { name } = request.params;
+//     const db = dbService.getDbServiceInstance();
 
-    const result = db.searchByName(name);
+//     const result = db.searchByName(name);
     
-    result
-    .then(data => response.json({data : data}))
-    .catch(err => console.log(err));
-})
+//     result
+//     .then(data => response.json({data : data}))
+//     .catch(err => console.log(err));
+// })
 
 app.listen(process.env.PORT, () => console.log('app is running http://127.0.0.1:' + process.env.PORT));
