@@ -9,3 +9,7 @@ const get = (url, params = {}) => {
         })
     })
 }
+
+module.exports = {
+    get
+}

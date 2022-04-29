@@ -34,8 +34,9 @@ class DbService {
 		return new Promise((resolve, reject) => {
 			if (args) {
 				connection.query(query, args, (err, results) => {
+					console.log(err, results);
 					if (err) {
-						reject(new Error(err))
+						reject(err.sqlMessage)
 					} else {
 						resolve(results);
 					}
@@ -44,7 +45,7 @@ class DbService {
 				connection.query(query, (err, results) => {
 					console.log(err, results);
 					if (err) {
-						reject(new Error(err))
+						reject(err.sqlMessage)
 					} else {
 						resolve(results);
 					}
@@ -60,8 +61,8 @@ class DbService {
 	}
 
 	getGoods (pageNum, pageSize) {
-		const start = pageNum * pageSize;
-		const end = start + pageSize
+		const start = (pageNum - 1) * pageSize;
+		const end = pageNum * pageSize
 		const query = `select * from goods limit ?, ?;`
 		return this.getResult(query, [start, end]);
 	}
@@ -73,8 +74,8 @@ class DbService {
 	 * 3 完成
 	 */
 	getOrder (userId, status, pageNum, pageSize) {
-		const start = pageNum * pageSize;
-		const end = start + pageSize
+		const start = (pageNum - 1) * pageSize;
+		const end = pageNum * pageSize
 		const query = `select * from orders where userid = ? and status = ? limit ?, ?;`
 		return this.getResult(query, [userId, status, start, end]);
 	}

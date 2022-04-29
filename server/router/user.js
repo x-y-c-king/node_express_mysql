@@ -2,6 +2,7 @@ const express = require("express");
 const db = require('../dbService');
 const Methods = require("../utils/methods")
 const router = express.Router();
+const { get } = require("../utils/axios")
 
 router.get("/getUserInfo", (request, response) => {
 	const { code } = request.query;
@@ -42,7 +43,7 @@ router.get("/getUserInfo", (request, response) => {
 
 router.post("/setUserInfo", (request, response) => {
 	const { userId, name, avatar } = request.body;
-
+	console.log(userId, name, avatar);
 	if ([userId, name, avatar].every(item => !["", null, undefined].includes(item))) {
 		db.setUserInfo(userId, name, avatar).then((res) => {
 			response.json(Methods.getSuccess(true))
@@ -84,11 +85,7 @@ router.get("/getAllOrder", (request, response) => {
 })
 
 router.get("/getGoods", (request, response) => {
-	const { userId, page, size } = request.query;
-	// if (['', null, undefined].includes(userId)) {
-	// 	response.json(Methods.getError("userid不能为空！"))
-	// 	return
-	// }
+	const { page, size } = request.query;
 	const carousel = db.getCarousel();
 	const goods = db.getGoods(page, size);
 	Promise.all([carousel, goods]).then(([carousel, goods]) => {
@@ -99,12 +96,6 @@ router.get("/getGoods", (request, response) => {
 	}).catch((err) => {
 		response.json(Methods.getError(err))
 	})
-
-	// db.getGoods(page, size).then(res => {
-	// 	response.json(Methods.getSuccess(res))
-	// }).catch((err) => {
-	// 	response.json(Methods.getError(err))
-	// })
 })
 
 router.get("/goodsDeails:id", (request, response) => {
